@@ -1,0 +1,134 @@
+.login-page {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ 
+    background-image:
+        linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+        url("https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1920");
+ 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+ 
+.glass-card {
+    width: 350px;
+    padding: 40px 30px;
+ 
+    background: rgba(255, 255, 255, 0.12);
+ 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+ 
+    border: 1px solid rgba(255,255,255,0.2);
+ 
+    border-radius: 20px;
+ 
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+ 
+    text-align: center;
+ 
+    color: white;
+}
+ 
+.glass-card h1 {
+    margin-bottom: 5px;
+    font-size: 36px;
+}
+ 
+.glass-card p {
+    margin-bottom: 25px;
+    color: rgba(255,255,255,0.85);
+}
+ 
+.glass-card form {
+    display: flex;
+    flex-direction: column;
+}
+ 
+.glass-card input {
+    margin-bottom: 15px;
+ 
+    padding: 14px;
+ 
+    border: 1px solid rgba(255,255,255,0.35);
+ 
+    border-radius: 10px;
+ 
+    background: rgba(255,255,255,0.15);
+ 
+    color: white;
+ 
+    outline: none;
+ 
+    font-size: 15px;
+}
+ 
+.glass-card input::placeholder {
+    color: rgba(255,255,255,0.75);
+}
+ 
+.glass-card button {
+    padding: 14px;
+ 
+    border: none;
+ 
+    border-radius: 10px;
+ 
+    background: white;
+ 
+    color: #333;
+ 
+    font-size: 16px;
+ 
+    font-weight: bold;
+ 
+    cursor: pointer;
+ 
+    transition: 0.3s;
+}
+ 
+.glass-card button:hover {
+    transform: translateY(-2px);
+ 
+    box-shadow: 0 6px 20px rgba(255,255,255,0.35);
+}
+ 
+.register-text {
+    margin-top: 20px;
+ 
+    color: rgba(255,255,255,0.85);
+ 
+    font-size: 14px;
+}
+ 
+.register-text a {
+    color: #7ec8ff;
+ 
+    text-decoration: none;
+ 
+    font-weight: bold;
+}
+ 
+.register-text a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+ 
+    .glass-card {
+        width: 90%;
+        padding: 20px;
+    }
+ 
+    .glass-card input,
+    .glass-card button {
+        width: 100%;
+    }
+ 
+    .glass-card h1 {
+        font-size: 28px;
+    }
+}
