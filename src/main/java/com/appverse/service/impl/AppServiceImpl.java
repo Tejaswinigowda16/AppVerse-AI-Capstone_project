@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
  
 import com.appverse.dto.AppDTO;
 import com.appverse.entity.App;
@@ -14,12 +16,15 @@ import com.appverse.service.AppService;
  
 @Service
 public class AppServiceImpl implements AppService {
+	private static final Logger logger=LoggerFactory.getLogger(AppServiceImpl.class);
  
     @Autowired
     private AppRepository appRepository;
  
     @Override
     public AppDTO addApp(AppDTO appDTO) {
+    	
+    	logger.info("Adding app:{}",appDTO.getAppName());
      
         App app = new App();
      
@@ -33,6 +38,7 @@ public class AppServiceImpl implements AppService {
         AppDTO savedAppDTO = new AppDTO();
      
         BeanUtils.copyProperties(savedApp, savedAppDTO);
+        logger.info("App added successfully");
      
         return savedAppDTO;
     }
@@ -40,10 +46,14 @@ public class AppServiceImpl implements AppService {
  
     @Override
     public AppDTO getAppById(Long appId) {
+    	
+    	logger.info("Fetching app with ID:{}",appId);
      
         App app = appRepository.findById(appId).orElse(null);
      
         if (app == null) {
+        	
+        	logger.warn("App not found with ID:{}",appId);
             return null;
         }
      
@@ -56,6 +66,8 @@ public class AppServiceImpl implements AppService {
  
     @Override
     public List<AppDTO> getAllApps() {
+    	
+    	logger.info("Fetching all apps");
  
     	List<App> apps = appRepository.findAll();
     	List<AppDTO> appDTOList = new ArrayList<>();
@@ -72,16 +84,20 @@ public class AppServiceImpl implements AppService {
     	    appDTOList.add(appDTO);
     	}
     	 
-    	 
+    	logger.info("Total apps fetched:{}",appDTOList.size()); 
     	return appDTOList;
     }
  
     @Override
     public AppDTO updateApp(Long appId, AppDTO appDTO) {
+    	
+    	logger.info("Updating app with ID:{}",appId);
  
     	App app = appRepository.findById(appId).orElse(null);
     	 
     	if (app == null) {
+    		
+    		logger.warn("App not found for update:{}",appId);
     	    return null;
     	}
     	 
@@ -94,14 +110,19 @@ public class AppServiceImpl implements AppService {
     	 
     	AppDTO updatedAppDTO = new AppDTO();
     	BeanUtils.copyProperties(updatedApp, updatedAppDTO);
+    	
+    	logger.info("App updated successfully");
     	 
     	return updatedAppDTO;
     }
  
     @Override
     public void deleteApp(Long appId) {
+    	logger.info("Deleting app with ID{}",appId);
     	
     	appRepository.deleteById(appId);
+    	
+    	logger.info("App deleted successfully");
  
     }
 }

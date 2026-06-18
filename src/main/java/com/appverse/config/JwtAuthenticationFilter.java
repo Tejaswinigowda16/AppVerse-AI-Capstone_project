@@ -17,7 +17,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
  
-        // JWT validation logic will be added later
+
  
         filterChain.doFilter(request, response);
     }

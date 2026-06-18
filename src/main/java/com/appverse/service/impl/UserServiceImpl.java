@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
  
 import com.appverse.dto.UserDTO;
 import com.appverse.dto.LoginDTO;
@@ -16,6 +18,7 @@ import com.appverse.service.UserService;
  
 @Service
 public class UserServiceImpl implements UserService {
+	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
  
     @Autowired
     private UserRepository userRepository;
@@ -31,7 +34,11 @@ public class UserServiceImpl implements UserService {
         user.setPassword(userDTO.getPassword());
         user.setRole(userDTO.getRole());
      
+        logger.info("Registering user with email: {}", userDTO.getEmail());
+        
         userRepository.save(user);
+        
+        logger.info("User registered successfully");
      
         return userDTO;
     }
@@ -39,6 +46,8 @@ public class UserServiceImpl implements UserService {
  
     @Override
     public UserDTO getUserById(Long userId) {
+    	
+    	logger.info("Fetching user with ID: {}", userId);
  
         Optional<User> optionalUser = userRepository.findById(userId);
  
@@ -50,12 +59,16 @@ public class UserServiceImpl implements UserService {
  
             return userDTO;
         }
+        
+        logger.warn("User not found with ID: {}", userId);
  
         return null;
     }
  
     @Override
     public List<UserDTO> getAllUsers() {
+    	
+    	logger.info("Fetching all users");
  
         List<User> users = userRepository.findAll();
  
@@ -69,12 +82,16 @@ public class UserServiceImpl implements UserService {
  
             userDTOList.add(dto);
         }
+        
+        logger.info("Total users fetched: {}", userDTOList.size());
  
         return userDTOList;
     }
  
     @Override
     public UserDTO updateUser(Long userId, UserDTO userDTO) {
+    	
+    	logger.info("Updating user with ID: {}", userId);
      
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -91,6 +108,8 @@ public class UserServiceImpl implements UserService {
      
         BeanUtils.copyProperties(updatedUser, dto);
      
+        logger.info("User updated successfully");
+        
         return dto;
     }
      
@@ -98,11 +117,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long userId) {
  
-        userRepository.deleteById(userId);
+    	logger.info("Deleting user with ID: {}", userId);
+    	 
+    	userRepository.deleteById(userId);
+    	 
+    	logger.info("User deleted successfully");
     }
     
     @Override
     public String login(LoginDTO loginDTO) {
+    	
+    	logger.info("Login attempt for email: {}", loginDTO.getEmail());
      
         List<User> users = userRepository.findAll();
      
@@ -111,9 +136,13 @@ public class UserServiceImpl implements UserService {
             if (user.getEmail().equals(loginDTO.getEmail())
                     && user.getPassword().equals(loginDTO.getPassword())) {
      
-                return "Login Successful";
+            	logger.info("User logged in successfully");
+            	
+            	return "Login Successful";
             }
         }
+        
+        logger.warn("Invalid login attempt for email: {}", loginDTO.getEmail());
      
         return "Invalid Email or Password";
     }

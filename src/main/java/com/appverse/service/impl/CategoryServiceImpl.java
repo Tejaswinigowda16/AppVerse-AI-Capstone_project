@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
  
 import com.appverse.dto.CategoryDTO;
 import com.appverse.entity.Category;
@@ -14,6 +16,7 @@ import com.appverse.service.CategoryService;
  
 @Service
 public class CategoryServiceImpl implements CategoryService {
+	 private static final Logger logger=LoggerFactory.getLogger(CategoryServiceImpl.class);
  
     @Autowired
     private CategoryRepository categoryRepository;
@@ -26,7 +29,9 @@ public class CategoryServiceImpl implements CategoryService {
         category.setCategoryName(categoryDTO.getCategoryName());
         category.setDescription(categoryDTO.getDescription());
      
+        logger.info("Adding category:{}",categoryDTO.getCategoryName());
         Category savedCategory = categoryRepository.save(category);
+        logger.info("Category added successfully");
      
         CategoryDTO savedCategoryDTO = new CategoryDTO();
      
@@ -39,10 +44,14 @@ public class CategoryServiceImpl implements CategoryService {
  
     @Override
     public CategoryDTO getCategoryById(Long categoryId) {
+    	
+    	logger.info("Fetching category with ID:{}",categoryId);
  
         Category category = categoryRepository.findById(categoryId).orElse(null);
  
         if (category == null) {
+        	
+        	logger.warn("Category not found with ID:{}",categoryId);
             return null;
         }
  
@@ -55,6 +64,8 @@ public class CategoryServiceImpl implements CategoryService {
  
     @Override
     public List<CategoryDTO> getAllCategories() {
+    	
+    	logger.info("Fetchng  all categories");
      
         List<Category> categories = categoryRepository.findAll();
      
@@ -70,6 +81,8 @@ public class CategoryServiceImpl implements CategoryService {
      
             categoryDTOList.add(categoryDTO);
         }
+        
+        logger.info("Total categories fetched:{}",categoryDTOList.size());
      
         return categoryDTOList;
     }
@@ -77,10 +90,15 @@ public class CategoryServiceImpl implements CategoryService {
  
     @Override
     public CategoryDTO updateCategory(Long categoryId, CategoryDTO categoryDTO) {
+    	
+    	logger.info("Updating category with ID:{}",categoryId);
  
         Category category = categoryRepository.findById(categoryId).orElse(null);
  
         if (category == null) {
+        	
+        	logger.warn("Category not found for update:{}",categoryId);
+        	logger.info("Category updated successfully");
             return null;
         }
  
@@ -98,7 +116,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(Long categoryId) {
  
-        categoryRepository.deleteById(categoryId);
+    	logger.info("Deleting category with ID: {}", categoryId);
+    	 
+    	categoryRepository.deleteById(categoryId);
+    	 
+    	logger.info("Category deleted successfully");
     }
 }
  

@@ -63,5 +63,10 @@ public class Developer {
     public Long getDeveloperId() {
     	return developerId;
     }
+    
+    public void setDeveloperId(Long developerId) {
+        this.developerId = developerId;
+    }
+     
 }
  
